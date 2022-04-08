@@ -1,7 +1,8 @@
 import React from 'react';
 
 function Name({ name, setName }) {
-  console.log('Name**');
+
+  console.log('Name**', name);
   return (
     <div>
       <h5>Name - {name}</h5>
