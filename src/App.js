@@ -1,67 +1,92 @@
-import './App.css';
 import { useState, useEffect, useMemo } from 'react';
-function App() {
-  const [fee, setFee] = useState(0);
-  const [count, setCount] = useState(0);
+import React from 'react';
 
-  const data = [
-    {
-      name: 'John',
-      salary: '10000',
-      id: 1,
-    },
-    {
-      name: 'Jane',
-      salary: '20000',
-      id: 2,
-    },
-  ];
+// const CheckBox = ({ children }) => {
+//   const [check, setCheck] = useState(false);
+//   const all_ = React.Children.map(children, (child) => {
+//     if (typeof child.type !== 'function') {
+//       return child;
+//       // return null;
+//       // throw new Error('child must be a function');
+//     }
+//     const clone = React.cloneElement(child, {
+//       toggle: () => {
+//         console.log('toggle');
+//         setCheck(!check);
+//       },
+//       check,
+//     });
+//     return clone;
+//   });
+//   return all_;
+// };
 
-  // `  intialState` is the initial state of the object if expensive to calculate
-  const [test, setTest] = useState(() => {
-    return JSON.stringify(data);
-  });
+// const CheckInput = ({ toggle, check }) => {
+//   console.log('check', check);
+//   return <input checked={check} onClick={toggle} type='checkbox' />;
+// };
 
-  const handleFee = () => {
-    //` set State if multiple state changes
-    setFee((value) => {
-      return value + 1;
-    });
-    setFee((value) => {
-      return value + 1;
-    });
-    setFee((value) => {
-      return value + 1;
-    });
-    setFee((value) => {
-      return value + 1;
-    });
+// const Label = ({ toggle, children }) => {
+//   if (!children) return null;
+//   if (!toggle) return <span>{children}</span>;
+//   return <label onClick={toggle}>{children}</label>;
+// };
+
+// function App() {
+//   return (
+//     <CheckBox>
+//       <CheckInput />
+//       <hr />
+//       <Label>Click Me</Label>
+//     </CheckBox>
+//   );
+// }
+
+const Label = ({ check, onClick, children }) => {
+  const style = {
+    color: '#FF5F00',
+    fontSize: '10px',
   };
 
-  const data_ = { name: 'Sanjay', salary: '10000', id: 3 };
-  const data__ = useMemo({ name: 'Sanjay', salary: '10000', id: 3 }, []);
-
-  console.log(data__);
-
-  // const { name, salary } = data_;
-  // ______
-  // const name = data_.Sanjay;
-  // const salary = data_.salary;
-
-  useEffect(() => {}, [{ ...data }]);
-
   return (
-    <div>
-      <h1>Fee - {fee}</h1>
-      <button onClick={handleFee}>Click me </button>
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        Click Count{count}
-      </button>
-    </div>
+    <h4 style={style} onClick={onClick}>
+      {children}
+    </h4>
+  );
+};
+
+const CheckInput = ({ check, onClick }) => {
+  const style = {
+    color: '#FF5F00',
+    fontSize: '10px',
+  };
+
+  return <input style={style} type='checkbox' checked={check} onChange={onClick} />;
+};
+
+const CheckBox = ({ children }) => {
+  const [check, setCheck] = useState(false);
+
+  const cloned_children = React.Children.map(children, (el) => {
+    const clone = React.cloneElement(el, {
+      check,
+      onClick: () => {
+        setCheck(!check);
+      },
+    });
+
+    return clone;
+  });
+
+  return <div>{cloned_children}</div>;
+};
+
+function App() {
+  return (
+    <CheckBox>
+      <CheckInput />
+      <Label>ok </Label>
+    </CheckBox>
   );
 }
 
