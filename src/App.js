@@ -1,26 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import React from 'react';
 
-// const CheckBox = ({ children }) => {
-//   const [check, setCheck] = useState(false);
-//   const all_ = React.Children.map(children, (child) => {
-//     if (typeof child.type !== 'function') {
-//       return child;
-//       // return null;
-//       // throw new Error('child must be a function');
-//     }
-//     const clone = React.cloneElement(child, {
-//       toggle: () => {
-//         console.log('toggle');
-//         setCheck(!check);
-//       },
-//       check,
-//     });
-//     return clone;
-//   });
-//   return all_;
-// };
-
 // const CheckInput = ({ toggle, check }) => {
 //   console.log('check', check);
 //   return <input checked={check} onClick={toggle} type='checkbox' />;
@@ -64,28 +44,52 @@ const CheckInput = ({ check, onClick }) => {
   return <input style={style} type='checkbox' checked={check} onChange={onClick} />;
 };
 
+// const CheckBox = ({ children }) => {
+//   const [check, setCheck] = useState(false);
+
+//   const cloned_children = React.Children.map(children, (el) => {
+//     const clone = React.cloneElement(el, {
+//       check,
+//       onClick: () => {
+//         setCheck(!check);
+//       },
+//     });
+
+//     return clone;
+//   });
+
+//   return <div>{cloned_children}</div>;
+// };
+
 const CheckBox = ({ children }) => {
   const [check, setCheck] = useState(false);
 
-  const cloned_children = React.Children.map(children, (el) => {
-    const clone = React.cloneElement(el, {
+  const all_ = React.Children.map(children, (child) => {
+    if (typeof child.type !== 'function') {
+      return child; // ` if want to return all children
+      // return null; // ` if want to ignore anything that is not a function
+      // throw new Error('child must be a component not element'); // ` if want to throw an error
+    }
+    const clone = React.cloneElement(child, {
       check,
       onClick: () => {
         setCheck(!check);
       },
     });
-
     return clone;
   });
-
-  return <div>{cloned_children}</div>;
+  return all_;
 };
 
 function App() {
   return (
     <CheckBox>
       <CheckInput />
-      <Label>ok </Label>
+
+      <Label>ok</Label>
+      <Label>Hello</Label>
+
+      <h1>Hello</h1>
     </CheckBox>
   );
 }
